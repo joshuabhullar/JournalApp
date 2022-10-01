@@ -3,7 +3,7 @@
 ### What will the application do?
 
 The purpose of this application is to be able to add **stories/entries**
-to a ***journal***. Users can add and even delete entries in order to create
+to a ***journal***. Users can add, view, search, and delete entries in order to create
 a journal of which they can reminisce upon. 
 
 ### Who will use it?
