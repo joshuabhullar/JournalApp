@@ -54,6 +54,7 @@ public class Journal {
     // MODIFIES: this
     // EFFECTS: gets journal titles from all the logs and puts them into a list
     public ArrayList<String> getJournalTitles() {
+        journalTitles = new ArrayList<>();
         for (JournalLogger log : logs) {
             this.journalTitles.add(log.getJournalTitle());
         }

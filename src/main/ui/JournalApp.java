@@ -81,8 +81,11 @@ public class JournalApp {
         log = new JournalLogger("a title", "October 23, 2022", "some entry");
         System.out.println("input a title, date, and entry");
         input.nextLine();
+        System.out.println("input a title first:");
         String title = input.nextLine();
+        System.out.println("input a date next:");
         String date = input.nextLine();
+        System.out.println("input a entry last:");
         String entry = input.nextLine();
         log.setJournalTitle(title);
         log.setJournalDate(date);
@@ -94,15 +97,19 @@ public class JournalApp {
     // MODIFIES: this
     // EFFECTS: deletes logger from journal
     public void doDeleteLog() {
-        System.out.println("input the title of journal log to delete");
+        System.out.println("input the title of journal log to delete:");
         input.nextLine();
         String deletedLog = input.nextLine();
         journal.deleteLog(deletedLog);
         System.out.println("the entry has been deleted");
     }
 
+    // EFFECTS: searches journal for a log based on title
+    //          and prints it out with the journal title,
+    //          journal date, and journal entry, else prints
+    //          invalid entry
     public void doSearchLog() {
-        System.out.println("input the title of journal log to search");
+        System.out.println("input the title of journal log to search:");
         input.nextLine();
         String titleOfJournal = input.nextLine();
         if (this.log.equals(journal.searchLog(titleOfJournal))) {
@@ -114,8 +121,8 @@ public class JournalApp {
         }
     }
 
+    // EFFECTS: prints every journal title added to journal
     public void doViewLogs() {
         System.out.println(journal.getJournalTitles());
-        input.nextLine();
     }
 }
