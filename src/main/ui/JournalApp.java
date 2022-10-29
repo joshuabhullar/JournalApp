@@ -91,7 +91,7 @@ public class JournalApp {
         log.setJournalDate(date);
         log.setJournalEntry(entry);
         journal.addLog(log);
-        System.out.println(title + " \n" + date + " \n" + entry);
+        System.out.println(" \n" + title + " \n" + date + " \n" + entry);
     }
 
     // MODIFIES: this
