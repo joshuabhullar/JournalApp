@@ -28,7 +28,14 @@ in the future.
 
 ### User Stories
 
-- As a user, I want to be able to **create** a new log and add it to a journal
+***PHASE 1:***
+
+- As a user, I want to be able to **add** a new log and add it to a journal
 - As a user, I want to be able to **delete** logs added to a journal
 - As a user, I want to be able to **search** for logs added to a journal
 - As a user, I want to be able to **view** a log or all logs added to a journal
+
+***PHASE 2:***
+
+- As a user, I want to be able to save my journal logs to file 
+- As a user, I want to be able to be able to load my journal logs from file
