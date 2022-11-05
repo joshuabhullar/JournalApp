@@ -1,0 +1,15 @@
+{
+    "journalName": "My journal",
+    "logs": [
+        {
+            "logTitle": "something of importance",
+            "logDate": "October 31, 2022",
+            "logEntry": "a list of cool things"
+        },
+        {
+            "logTitle": "yay another title",
+            "logDate": "November 1, 2022",
+            "logEntry": "descriptive entry"
+        }
+    ]
+}

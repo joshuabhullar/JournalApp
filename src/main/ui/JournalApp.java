@@ -2,19 +2,31 @@ package ui;
 
 import model.JournalLogger;
 import model.Journal;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
-// References: inspiration taken from the TellerApp project
-//             https://github.students.cs.ubc.ca/CPSC210/TellerApp
+// References: inspiration taken from the JsonSerializationDemo project
+//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
+// Represents the journal application
 public class JournalApp {
     private Journal journal;
     private JournalLogger log;
     private Scanner input;
+    private static final String JSON_STORE = "./data/journalapp.json";
+    private JsonReader jsonReader;
+    private JsonWriter jsonWriter;
 
-    // EFFECTS: runs the journal application
-    public JournalApp() {
+    // EFFECTS: constructs journalapp and runs application
+    public JournalApp() throws FileNotFoundException {
+        input = new Scanner(System.in);
+        journal = new Journal("My journal");
+        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_STORE);
         runJournal();
     }
 
@@ -23,6 +35,7 @@ public class JournalApp {
     public void runJournal() {
         boolean keepGoing = true;
         String command = null;
+        input = new Scanner(System.in);
 
         init();
 
@@ -31,14 +44,14 @@ public class JournalApp {
             command = input.next();
             command = command.toLowerCase();
 
-            if (command.equals("q")) {
+            if (command.equals("7")) {
                 keepGoing = false;
             } else {
                 processCommand(command);
             }
         }
 
-        System.out.println("\nCya!");
+        System.out.println("\nCya");
     }
 
     // MODIFIES: this
@@ -52,6 +65,10 @@ public class JournalApp {
             doSearchLog();
         } else if (command.equals("4")) {
             doViewLogs();
+        } else if (command.equals("5")) {
+            doSaveJournal();
+        } else if (command.equals("6")) {
+            doLoadJournal();
         } else {
             System.out.println("Invalid input");
         }
@@ -73,6 +90,9 @@ public class JournalApp {
         System.out.println("\t2 -> delete a log");
         System.out.println("\t3 -> search for a log");
         System.out.println("\t4 -> view logs");
+        System.out.println("\t5 -> save journal");
+        System.out.println("\t6 -> load journal");
+        System.out.println("\t7 -> quit");
     }
 
     // MODIFIES: this
@@ -124,5 +144,28 @@ public class JournalApp {
     // EFFECTS: prints every journal title added to journal
     public void doViewLogs() {
         System.out.println(journal.getJournalTitles());
+    }
+
+    // EFFECTS: saves journal to file
+    public void doSaveJournal() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(journal);
+            jsonWriter.close();
+            System.out.println("Saved " + journal.getJournalName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void doLoadJournal() {
+        try {
+            journal = jsonReader.read();
+            System.out.println("Loaded " + journal.getJournalName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("unable to read from file: " + JSON_STORE);
+        }
     }
 }

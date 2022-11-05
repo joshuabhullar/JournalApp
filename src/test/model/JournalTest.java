@@ -3,13 +3,12 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ui.JournalApp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-// References: inspiration taken from the TellerApp project
-//             https://github.students.cs.ubc.ca/CPSC210/TellerApp
+// References: inspiration taken from the JsonSerializationDemo project
+//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
 class JournalTest {
     private JournalLogger log1;

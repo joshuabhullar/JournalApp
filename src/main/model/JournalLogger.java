@@ -1,10 +1,13 @@
 package model;
 
-// References: inspiration taken from the TellerApp project
-//             https://github.students.cs.ubc.ca/CPSC210/TellerApp
+import org.json.JSONObject;
+import persistence.Writable;
+
+// References: inspiration taken from the JsonSerializationDemo project
+//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
 // Represents a journal log with a journal title, journal date, and journal entry
-public class JournalLogger {
+public class JournalLogger implements Writable {
     private String journalTitle;
     private String journalDate;
     private String journalEntry;
@@ -39,4 +42,14 @@ public class JournalLogger {
     public void setJournalEntry(String journalEntry) {
         this.journalEntry = journalEntry;
     }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("logTitle", journalTitle);
+        json.put("logDate", journalDate);
+        json.put("logEntry", journalEntry);
+        return json;
+    }
+
 }

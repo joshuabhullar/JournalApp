@@ -1,12 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
-// References: inspiration taken from the TellerApp project
-//             https://github.students.cs.ubc.ca/CPSC210/TellerApp
+// References: inspiration taken from the JsonSerializationDemo project
+//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
 // Represents a journal with a name and empty list of journal logs
-public class Journal {
+public class Journal implements Writable {
     private ArrayList<JournalLogger> logs;
     private ArrayList<String> journalTitles;
     private String journalName;
@@ -77,5 +81,23 @@ public class Journal {
     // EFFECTS: returns true if logs is empty, else false
     public boolean isEmpty() {
         return this.logs.size() == 0;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("journalName", journalName);
+        json.put("logs", logsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns entries in the diary as a JSON array
+    private JSONArray logsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (JournalLogger l : logs) {
+            jsonArray.put(l.toJson());
+        }
+        return jsonArray;
     }
 }
