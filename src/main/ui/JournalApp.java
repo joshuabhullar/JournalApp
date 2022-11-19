@@ -18,10 +18,9 @@ public class JournalApp extends JFrame {
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 800;
     private static final int SPACING_HEIGHT = 25;
-    private Dimension size = new Dimension(WIDTH, HEIGHT);
-    private JPanel mainFrame = new JPanel();
-    private DefaultListModel defaultListModel;
-    private JList someRandomList;
+    private final JPanel mainFrame = new JPanel();
+    private DefaultListModel<String> defaultListModel;
+    private JList<String> someRandomList;
     private JTextField journaltitleField;
     private JTextField journaldateField;
     private JTextArea journalentryField;
@@ -31,8 +30,8 @@ public class JournalApp extends JFrame {
     private JLabel loadedPhrase;
     private JLabel savedPhrase;
     private static final String JSON_STORE = "./data/journalapp.json";
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     // References: https://docs.oracle.com/javase/tutorial/uiswing/components/panel.html
     //             used throughout project for implementation of mainFrame
@@ -47,6 +46,7 @@ public class JournalApp extends JFrame {
         setVisible(true);
         mainFrame.setLayout(null);
         setJMenuBar(makeMenu());
+        Dimension size = new Dimension(WIDTH, HEIGHT);
         setMinimumSize(size);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addVisuals();
@@ -80,14 +80,10 @@ public class JournalApp extends JFrame {
         menu = new JMenu("Journal");
         menuBar.add(menu);
         menuItem = new JMenuItem("Save");
-        menuItem.addActionListener(e -> {
-            doSaveJournal();
-        });
+        menuItem.addActionListener(e -> doSaveJournal());
         menu.add(menuItem);
         menuItem = new JMenuItem("Load");
-        menuItem.addActionListener(e -> {
-            doLoadJournal();
-        });
+        menuItem.addActionListener(e -> doLoadJournal());
         menu.add(menuItem);
         return menuBar;
     }
@@ -125,7 +121,7 @@ public class JournalApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: updates the list of logs
     private void updateJournalList() {
-        DefaultListModel newListModel = new DefaultListModel();
+        DefaultListModel<String> newListModel = new DefaultListModel<>();
         for (JournalLogger log : journal.viewLogs()) {
             newListModel.addElement(log.getJournalTitle());
         }
@@ -140,15 +136,15 @@ public class JournalApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: creates empty journal list
     private void createEmptyJournalList() {
-        defaultListModel = new DefaultListModel();
-        someRandomList = new JList(defaultListModel);
+        defaultListModel = new DefaultListModel<>();
+        someRandomList = new JList<>(defaultListModel);
         someRandomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         someRandomList.setSelectedIndex(-1);
         someRandomList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 if (someRandomList.getSelectedIndex() > -1) {
-                    journal.setJournalName(defaultListModel.getElementAt(someRandomList.getSelectedIndex()).toString());
-                    updateJournalDetails(defaultListModel.getElementAt(someRandomList.getSelectedIndex()).toString());
+                    journal.setJournalName(defaultListModel.getElementAt(someRandomList.getSelectedIndex()));
+                    updateJournalDetails(defaultListModel.getElementAt(someRandomList.getSelectedIndex()));
                 }
             }
         });
@@ -268,9 +264,7 @@ public class JournalApp extends JFrame {
         createButton.setBounds(150, HEIGHT - 300, 300, 80);
         createButton.setFont(new Font("Arial", Font.PLAIN, 18));
         createButton.setBackground(Color.decode("#ADD8E6"));
-        createButton.addActionListener(e -> {
-            doAdd();
-        });
+        createButton.addActionListener(e -> doAdd());
         mainFrame.add(createButton);
     }
 
@@ -283,21 +277,19 @@ public class JournalApp extends JFrame {
         createButton.setBounds(600, HEIGHT - 300, 300, 80);
         createButton.setFont(new Font("Arial", Font.PLAIN, 18));
         createButton.setBackground(Color.decode("#FFCCCB"));
-        createButton.addActionListener(e -> {
-            doDelete();
-        });
+        createButton.addActionListener(e -> doDelete());
         mainFrame.add(createButton);
     }
 
     // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
     //            and IconDemo
     // EFFECTS: puts image into journalapp
-    protected ImageIcon makeImageIcon(String path) {
-        java.net.URL imgURL = JournalApp.class.getResource(path);
+    protected ImageIcon makeImageIcon() {
+        java.net.URL imgURL = JournalApp.class.getResource("images/journal.png");
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            System.err.println("Couldn't find file: " + path);
+            System.err.println("Couldn't find file: " + "images/journal.png");
             return null;
         }
     }
@@ -306,7 +298,7 @@ public class JournalApp extends JFrame {
     // EFFECTS: adds image
     private void makeImage() {
         JLabel image = new JLabel();
-        image.setIcon(makeImageIcon("images/journal.png"));
+        image.setIcon(makeImageIcon());
         image.setBounds(385, 230, 300, 300);
         mainFrame.add(image);
     }
@@ -315,10 +307,10 @@ public class JournalApp extends JFrame {
     // EFFECTS: notice of successful save and load
     private void addVisualLabels() {
         savedPhrase = new JLabel("Saved!");
-        savedPhrase.setBounds(500,230,250,250);
+        savedPhrase.setBounds(480,150,250,250);
         savedPhrase.setVisible(false);
         loadedPhrase = new JLabel("Loaded!");
-        loadedPhrase.setBounds(500,230,250,250);
+        loadedPhrase.setBounds(480,150,250,250);
         loadedPhrase.setVisible(false);
         mainFrame.add(savedPhrase);
         mainFrame.add(loadedPhrase);
@@ -331,9 +323,7 @@ public class JournalApp extends JFrame {
             jsonWriter.write(journal);
             jsonWriter.close();
             savedPhrase.setVisible(true);
-            Timer timer = new Timer(1000, y -> {
-                savedPhrase.setVisible(false);
-            });
+            Timer timer = new Timer(1000, y -> savedPhrase.setVisible(false));
             timer.setRepeats(false);
             timer.start();
             repaint();
@@ -348,9 +338,7 @@ public class JournalApp extends JFrame {
         try {
             journal = jsonReader.read();
             loadedPhrase.setVisible(true);
-            Timer timer = new Timer(1000, y -> {
-                loadedPhrase.setVisible(false);
-            });
+            Timer timer = new Timer(1000, y -> loadedPhrase.setVisible(false));
             timer.setRepeats(false);
             timer.start();
             updateJournalList();
