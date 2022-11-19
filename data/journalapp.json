@@ -1,8 +1,35 @@
 {
-    "journalName": "someone's journal",
-    "logs": [{
-        "logTitle": "some cool title",
-        "logDate": "November 4, 2022",
-        "logEntry": "jfa;sklfd;asljf a;f "
-    }]
+    "journalName": " asdf",
+    "logs": [
+        {
+            "logTitle": "asdf",
+            "logDate": "sadf",
+            "logEntry": "asdf"
+        },
+        {
+            "logTitle": " adsf",
+            "logDate": " sdaf",
+            "logEntry": " asdf"
+        },
+        {
+            "logTitle": " asdf",
+            "logDate": " asdf",
+            "logEntry": " adsf"
+        },
+        {
+            "logTitle": " asdf",
+            "logDate": " sdaf",
+            "logEntry": " asdf"
+        },
+        {
+            "logTitle": " asdf",
+            "logDate": " asdf",
+            "logEntry": " asdf"
+        },
+        {
+            "logTitle": " asdf",
+            "logDate": " asdf",
+            "logEntry": " asdf"
+        }
+    ]
 }

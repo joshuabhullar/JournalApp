@@ -1,158 +1,342 @@
 package ui;
 
-import model.JournalLogger;
 import model.Journal;
-import persistence.JsonReader;
+import model.JournalLogger;
 import persistence.JsonWriter;
+import persistence.JsonReader;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
-// Represents the journal application
-public class JournalApp {
+// Reference: references used for each method
+//            stated above each method respectively
+// Represents the GUI for the project
+public class JournalApp extends JFrame {
     private Journal journal;
-    private JournalLogger log;
-    private Scanner input;
+    private static final int WIDTH = 1100;
+    private static final int HEIGHT = 800;
+    private static final int SPACING_HEIGHT = 25;
+    private Dimension size = new Dimension(WIDTH, HEIGHT);
+    private JPanel mainFrame = new JPanel();
+    private DefaultListModel defaultListModel;
+    private JList someRandomList;
+    private JTextField journaltitleField;
+    private JTextField journaldateField;
+    private JTextArea journalentryField;
+    private JLabel journaltitleLabel;
+    private JLabel journaldateLabel;
+    private JLabel journalentryLabel;
+    private JLabel loadedPhrase;
+    private JLabel savedPhrase;
     private static final String JSON_STORE = "./data/journalapp.json";
-    private JsonReader jsonReader;
     private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
-    // EFFECTS: constructs journalapp and runs application
-    public JournalApp() throws FileNotFoundException {
-        input = new Scanner(System.in);
-        journal = new Journal("My journal");
-        jsonReader = new JsonReader(JSON_STORE);
-        jsonWriter = new JsonWriter(JSON_STORE);
-        runJournal();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes user input
-    public void runJournal() {
-        boolean keepGoing = true;
-        String command = null;
-        input = new Scanner(System.in);
-
-        init();
-
-        while (keepGoing) {
-            journalDisplay();
-            command = input.next();
-            command = command.toLowerCase();
-
-            if (command.equals("7")) {
-                keepGoing = false;
-            } else {
-                processCommand(command);
-            }
-        }
-
-        System.out.println("\nCya");
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes user command
-    private void processCommand(String command) {
-        if (command.equals("1")) {
-            doAddLog();
-        } else if (command.equals("2")) {
-            doDeleteLog();
-        } else if (command.equals("3")) {
-            doSearchLog();
-        } else if (command.equals("4")) {
-            doViewLogs();
-        } else if (command.equals("5")) {
-            doSaveJournal();
-        } else if (command.equals("6")) {
-            doLoadJournal();
-        } else {
-            System.out.println("Invalid input");
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: initializes a journal, a list of journal, and log
-    private void init() {
+    // References: https://docs.oracle.com/javase/tutorial/uiswing/components/panel.html
+    //             used throughout project for implementation of mainFrame
+    // MODIFIES: journal, jsonWriter, jsonReader
+    // EFFECTS: creates GUI and its components
+    public JournalApp() {
         this.journal = new Journal("someone's journal");
-        this.log = new JournalLogger("a title", "October 23, 2022", "some entry");
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
+        this.jsonReader = new JsonReader(JSON_STORE);
+        this.jsonWriter = new JsonWriter(JSON_STORE);
+        setTitle("JournalApp");
+        add(mainFrame);
+        setVisible(true);
+        mainFrame.setLayout(null);
+        setJMenuBar(makeMenu());
+        setMinimumSize(size);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addVisuals();
     }
 
-    // EFFECTS: displays menu of options to user
-    private void journalDisplay() {
-        System.out.println("\nSelect from:");
-        System.out.println("\t1 -> add a log");
-        System.out.println("\t2 -> delete a log");
-        System.out.println("\t3 -> search for a log");
-        System.out.println("\t4 -> view logs");
-        System.out.println("\t5 -> save journal");
-        System.out.println("\t6 -> load journal");
-        System.out.println("\t7 -> quit");
+    // Reference: Used simpledrawingplayer to compress
+    //            this method into a bunch of different methods
+    // MODIFIES: private fields
+    // EFFECTS: creates components
+    private void addVisuals() {
+        addAddJournalLabels();
+        addAddJournalEntryButton();
+        makeImage();
+        makeFields();
+        addDeleteJournalEntryButton();
+        addHeaders();
+        createJournalDetails();
+        addVisualLabels();
+        addJournalEntryLabels();
+        createEmptyJournalList();
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/menu.html
+    //            and MenuDemo
+    // EFFECTS: create menu bar for gui
+    public JMenuBar makeMenu() {
+        JMenuBar menuBar;
+        JMenu menu;
+        JMenuItem menuItem;
+        menuBar = new JMenuBar();
+        menu = new JMenu("Journal");
+        menuBar.add(menu);
+        menuItem = new JMenuItem("Save");
+        menuItem.addActionListener(e -> {
+            doSaveJournal();
+        });
+        menu.add(menuItem);
+        menuItem = new JMenuItem("Load");
+        menuItem.addActionListener(e -> {
+            doLoadJournal();
+        });
+        menu.add(menuItem);
+        return menuBar;
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
+    // MODIFIES: Journal journal
+    // EFFECTS: creates a journal list, ready for logs/entries to be added,
+    //          then rerenders frame
+    private void doAdd() {
+        JournalLogger journalList = new JournalLogger("default title", "default date",
+                "default entry");
+        journalList.setJournalTitle(journaltitleField.getText());
+        journalList.setJournalDate(journaldateField.getText());
+        journalList.setJournalEntry(journalentryField.getText());
+        journal.addLog(journalList);
+        journaltitleField.setText(" ");
+        journaldateField.setText(" ");
+        journalentryField.setText(" ");
+        updateJournalList();
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
+    // MODIFIES: Journal journal
+    // EFFECTS: deletes journal
+    private void doDelete() {
+        String clicked = journal.getJournalName();
+        journal.deleteLog(clicked);
+        updateJournalList();
+        clearJournalDetails();
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/list.html
+    //            Also used ListDemo when implementing list related things such as
+    //            DefaultListModel and JList
+    // MODIFIES: this
+    // EFFECTS: updates the list of logs
+    private void updateJournalList() {
+        DefaultListModel newListModel = new DefaultListModel();
+        for (JournalLogger log : journal.viewLogs()) {
+            newListModel.addElement(log.getJournalTitle());
+        }
+        defaultListModel = newListModel;
+        someRandomList.setModel(defaultListModel);
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html
+    //            Used for implementation of listScrollPane
+    //            https://docs.oracle.com/javase/tutorial/uiswing/events/intro.html
+    //            Used for event handling
+    // MODIFIES: this
+    // EFFECTS: creates empty journal list
+    private void createEmptyJournalList() {
+        defaultListModel = new DefaultListModel();
+        someRandomList = new JList(defaultListModel);
+        someRandomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        someRandomList.setSelectedIndex(-1);
+        someRandomList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                if (someRandomList.getSelectedIndex() > -1) {
+                    journal.setJournalName(defaultListModel.getElementAt(someRandomList.getSelectedIndex()).toString());
+                    updateJournalDetails(defaultListModel.getElementAt(someRandomList.getSelectedIndex()).toString());
+                }
+            }
+        });
+        someRandomList.setVisibleRowCount(3);
+        JScrollPane listScrollPane = new JScrollPane(someRandomList);
+        listScrollPane.setBounds(385,100,200,100);
+        mainFrame.add(listScrollPane);
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
+    //            and TextDemo
+    // MODIFIES: this
+    // EFFECTS: creates text fields
+    private void makeFields() {
+        journaltitleField = new JTextField();
+        journaltitleField.setBounds(200, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
+        journaldateField = new JTextField();
+        journaldateField.setBounds(200, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
+        journalentryField = new JTextArea("");
+        journalentryField.setBounds(200, SPACING_HEIGHT * 6, 100, 200);
+        mainFrame.add(journaltitleField);
+        mainFrame.add(journaldateField);
+        mainFrame.add(journalentryField);
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
+    //            and LabelDemo
+    // MODIFIES: this
+    // EFFECTS: creates journal details text ready to be filled in
+    private void createJournalDetails() {
+        journaltitleLabel = new JLabel("");
+        journaltitleLabel.setBounds(750, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
+        journaldateLabel = new JLabel("");
+        journaldateLabel.setBounds(750, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
+        journalentryLabel = new JLabel("");
+        journalentryLabel.setBounds(750, SPACING_HEIGHT * 6, 200, SPACING_HEIGHT);
+        mainFrame.add(journaltitleLabel);
+        mainFrame.add(journaldateLabel);
+        mainFrame.add(journalentryLabel);
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
+    //            and TextComponentDemo
+    // MODIFIES: this
+    // EFFECTS: updates journal details
+    private void updateJournalDetails(String journalTitle) {
+        JournalLogger clicked = journal.searchLog(journalTitle);
+        journaltitleLabel.setText(clicked.getJournalTitle());
+        journaldateLabel.setText(clicked.getJournalDate());
+        journalentryLabel.setText(clicked.getJournalEntry());
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
+    //            and TextComponentDemo
+    // MODIFIES: this
+    // EFFECTS: clears journal details
+    private void clearJournalDetails() {
+        journaltitleField.setText(" ");
+        journaldateField.setText(" ");
+        journalentryField.setText(" ");
+        repaint();
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
+    //            and LabelDemo
+    // MODIFIES: this
+    // EFFECTS: creates journal labels
+    private void addJournalEntryLabels() {
+        JLabel journaltitleLabel = new JLabel("Title:");
+        journaltitleLabel.setBounds(700, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
+        mainFrame.add(journaltitleLabel);
+        JLabel journaldateLabel = new JLabel("Date:");
+        journaldateLabel.setBounds(700, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
+        mainFrame.add(journaldateLabel);
+        JLabel journalentryLabel = new JLabel("Entry:");
+        journalentryLabel.setBounds(700, SPACING_HEIGHT * 6, 100, SPACING_HEIGHT);
+        mainFrame.add(journalentryLabel);
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
+    //            and LabelDemo
+    // MODIFIES: this
+    // EFFECTS: adds labels for creating journal logs
+    private void addAddJournalLabels() {
+        JLabel journaltitleLabel = new JLabel("Title:");
+        journaltitleLabel.setBounds(165,SPACING_HEIGHT * 4,100,SPACING_HEIGHT);
+        mainFrame.add(journaltitleLabel);
+        JLabel journaldateLabel = new JLabel("Date:");
+        journaldateLabel.setBounds(165,SPACING_HEIGHT * 5,100,SPACING_HEIGHT);
+        mainFrame.add(journaldateLabel);
+        JLabel journalentryLabel = new JLabel("Entry:");
+        journalentryLabel.setBounds(165,SPACING_HEIGHT * 6,100,SPACING_HEIGHT);
+        mainFrame.add(journalentryLabel);
     }
 
     // MODIFIES: this
-    // EFFECTS: adds logger to journal
-    public void doAddLog() {
-        log = new JournalLogger("a title", "October 23, 2022", "some entry");
-        System.out.println("input a title, date, and entry");
-        input.nextLine();
-        System.out.println("input a title first:");
-        String title = input.nextLine();
-        System.out.println("input a date next:");
-        String date = input.nextLine();
-        System.out.println("input a entry last:");
-        String entry = input.nextLine();
-        log.setJournalTitle(title);
-        log.setJournalDate(date);
-        log.setJournalEntry(entry);
-        journal.addLog(log);
-        System.out.println(" \n" + title + " \n" + date + " \n" + entry);
+    // EFFECTS: header text for the journal
+    private void addHeaders() {
+        JLabel journalViewerHeader = new JLabel("Log Details:");
+        journalViewerHeader.setBounds(700,SPACING_HEIGHT * 2,250,25);
+        journalViewerHeader.setFont(new Font("Arial", Font.PLAIN, 18));
+        journalViewerHeader.setBackground(Color.decode("#FFCCCB"));
+        mainFrame.add(journalViewerHeader);
+        JLabel journalLoggerHeader = new JLabel("Enter Journal Log:");
+        journalLoggerHeader.setBounds(175,SPACING_HEIGHT * 2,250,25);
+        journalLoggerHeader.setFont(new Font("Arial", Font.PLAIN, 18));
+        journalLoggerHeader.setBackground(Color.decode("#FFCCCB"));
+        mainFrame.add(journalLoggerHeader);
     }
 
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
+    //            and ButtonDemo
     // MODIFIES: this
-    // EFFECTS: deletes logger from journal
-    public void doDeleteLog() {
-        System.out.println("input the title of journal log to delete:");
-        input.nextLine();
-        String deletedLog = input.nextLine();
-        journal.deleteLog(deletedLog);
-        System.out.println("the entry has been deleted");
+    // EFFECTS: create journal log button
+    private void addAddJournalEntryButton() {
+        JButton createButton = new JButton("Create new log");
+        createButton.setBounds(150, HEIGHT - 300, 300, 80);
+        createButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        createButton.setBackground(Color.decode("#ADD8E6"));
+        createButton.addActionListener(e -> {
+            doAdd();
+        });
+        mainFrame.add(createButton);
     }
 
-    // EFFECTS: searches journal for a log based on title
-    //          and prints it out with the journal title,
-    //          journal date, and journal entry, else prints
-    //          invalid entry
-    public void doSearchLog() {
-        System.out.println("input the title of journal log to search:");
-        input.nextLine();
-        String titleOfJournal = input.nextLine();
-        if (this.log.equals(journal.searchLog(titleOfJournal))) {
-            System.out.println(journal.searchLog(titleOfJournal).getJournalTitle() + " \n"
-                    + journal.searchLog(titleOfJournal).getJournalDate() + " \n"
-                    + journal.searchLog(titleOfJournal).getJournalEntry());
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
+    //            and ButtonDemo
+    // MODIFIES: this
+    // EFFECTS: delete button to delete journal log
+    private void addDeleteJournalEntryButton() {
+        JButton createButton = new JButton("Delete this log");
+        createButton.setBounds(600, HEIGHT - 300, 300, 80);
+        createButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        createButton.setBackground(Color.decode("#FFCCCB"));
+        createButton.addActionListener(e -> {
+            doDelete();
+        });
+        mainFrame.add(createButton);
+    }
+
+    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
+    //            and IconDemo
+    // EFFECTS: puts image into journalapp
+    protected ImageIcon makeImageIcon(String path) {
+        java.net.URL imgURL = JournalApp.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
         } else {
-            System.out.println("invalid entry");
+            System.err.println("Couldn't find file: " + path);
+            return null;
         }
     }
 
-    // EFFECTS: prints every journal title added to journal
-    public void doViewLogs() {
-        System.out.println(journal.getJournalTitles());
+    // MODIFIES: this
+    // EFFECTS: adds image
+    private void makeImage() {
+        JLabel image = new JLabel();
+        image.setIcon(makeImageIcon("images/journal.png"));
+        image.setBounds(385, 230, 300, 300);
+        mainFrame.add(image);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: notice of successful save and load
+    private void addVisualLabels() {
+        savedPhrase = new JLabel("Saved!");
+        savedPhrase.setBounds(500,230,250,250);
+        savedPhrase.setVisible(false);
+        loadedPhrase = new JLabel("Loaded!");
+        loadedPhrase.setBounds(500,230,250,250);
+        loadedPhrase.setVisible(false);
+        mainFrame.add(savedPhrase);
+        mainFrame.add(loadedPhrase);
     }
 
     // EFFECTS: saves journal to file
-    public void doSaveJournal() {
+    private void doSaveJournal() {
         try {
             jsonWriter.open();
             jsonWriter.write(journal);
             jsonWriter.close();
-            System.out.println("Saved " + journal.getJournalName() + " to " + JSON_STORE);
+            savedPhrase.setVisible(true);
+            Timer timer = new Timer(1000, y -> {
+                savedPhrase.setVisible(false);
+            });
+            timer.setRepeats(false);
+            timer.start();
+            repaint();
         } catch (FileNotFoundException e) {
             System.out.println("unable to write to file: " + JSON_STORE);
         }
@@ -163,7 +347,14 @@ public class JournalApp {
     private void doLoadJournal() {
         try {
             journal = jsonReader.read();
-            System.out.println("Loaded " + journal.getJournalName() + " from " + JSON_STORE);
+            loadedPhrase.setVisible(true);
+            Timer timer = new Timer(1000, y -> {
+                loadedPhrase.setVisible(false);
+            });
+            timer.setRepeats(false);
+            timer.start();
+            updateJournalList();
+            repaint();
         } catch (IOException e) {
             System.out.println("unable to read from file: " + JSON_STORE);
         }

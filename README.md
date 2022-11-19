@@ -1,4 +1,4 @@
-# Journal Logging Application
+    # Journal Logging Application
 
 ### What will the application do?
 
@@ -39,3 +39,15 @@ in the future.
 
 - As a user, I want to be able to save my journal logs to file 
 - As a user, I want to be able to be able to load my journal logs from file
+
+# Instructions for Grader
+
+- You can generate the first required event related to adding Xs to a Y by pressing
+  the "Create new log" button to add a log to the list of logs
+- You can generate the second required event related to adding Xs to a Y by pressing
+  the "Delete this log" button to delete a log from the list of logs
+- You can locate my visual component by looking at the middle of the screen :)
+- You can save the state of my application by clicking Journal on the top left
+  of the application and pressing Save
+- You can reload the state of my application by clicking Journal on the top left
+  of the application and pressing Load
