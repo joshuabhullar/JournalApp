@@ -51,3 +51,18 @@ in the future.
   of the application and pressing Save
 - You can reload the state of my application by clicking Journal on the top left
   of the application and pressing Load
+
+# Phase 4: Task 2
+
+Fri Dec 02 15:11:12 PST 2022
+Journal log journalentry1 was added to the journal
+Fri Dec 02 15:11:17 PST 2022
+Journal log journalentry1 was deleted from the journal
+Fri Dec 02 15:11:24 PST 2022
+Journal log journalentry2 was added to the journal
+Fri Dec 02 15:11:31 PST 2022
+Journal log journalentry3 was added to the journal
+Fri Dec 02 15:11:32 PST 2022
+Journal log journalentry2 was deleted from the journal
+Fri Dec 02 15:11:34 PST 2022
+Journal log journalentry3 was deleted from the journal

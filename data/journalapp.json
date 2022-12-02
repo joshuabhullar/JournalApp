@@ -1,35 +1,15 @@
 {
-    "journalName": " mnmn",
+    "journalName": "asdf",
     "logs": [
         {
             "logTitle": "asdf",
-            "logDate": "asdf",
+            "logDate": "asf",
             "logEntry": "asdf"
         },
         {
             "logTitle": " fdas",
             "logDate": " fdas",
             "logEntry": " fdas"
-        },
-        {
-            "logTitle": " lkj;",
-            "logDate": " i;lj",
-            "logEntry": " l;kj"
-        },
-        {
-            "logTitle": " owiqpur",
-            "logDate": " qwerpiou",
-            "logEntry": " qwer"
-        },
-        {
-            "logTitle": " zxv",
-            "logDate": " zxcv",
-            "logEntry": " zxcv"
-        },
-        {
-            "logTitle": " mnmn",
-            "logDate": " nmmn",
-            "logEntry": " ,mmn"
         }
     ]
 }

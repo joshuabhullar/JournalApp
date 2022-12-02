@@ -26,12 +26,17 @@ public class Journal implements Writable {
     // EFFECTS: adds a journal log to the list of journal logs
     public void addLog(JournalLogger log) {
         this.logs.add(log);
+        EventLog.getInstance().logEvent(new Event("Journal log " + log.getJournalTitle() + " was added to "
+                + "the journal"));
     }
 
     // MODIFIES: this
     // EFFECTS: removes a journal log by using searchLog to find the journal name to remove from list of journal logs
     public void deleteLog(String journalName) {
+        String removedLogTitle = searchLog(journalName).getJournalTitle();
         this.logs.remove(searchLog(journalName));
+        EventLog.getInstance().logEvent(new Event("Journal log " + removedLogTitle
+                + " was deleted from the journal"));
     }
 
     // EFFECTS: searches for a journal log based on the journal log's title
