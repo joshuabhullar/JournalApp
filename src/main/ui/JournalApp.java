@@ -21,12 +21,12 @@ public class JournalApp extends JFrame {
     private final JPanel mainFrame = new JPanel();
     private DefaultListModel<String> defaultListModel;
     private JList<String> someRandomList;
-    private JTextField journaltitleField;
-    private JTextField journaldateField;
-    private JTextArea journalentryField;
-    private JLabel journaltitleLabel;
-    private JLabel journaldateLabel;
-    private JLabel journalentryLabel;
+    private JTextField journalTitleField;
+    private JTextField journalDateField;
+    private JTextArea journalEntryField;
+    private JLabel journalTitleLabel;
+    private JLabel journalDateLabel;
+    private JLabel journalEntryLabel;
     private JLabel loadedPhrase;
     private JLabel savedPhrase;
     private static final String JSON_STORE = "./data/journalapp.json";
@@ -95,13 +95,13 @@ public class JournalApp extends JFrame {
     private void doAdd() {
         JournalLogger journalList = new JournalLogger("default title", "default date",
                 "default entry");
-        journalList.setJournalTitle(journaltitleField.getText());
-        journalList.setJournalDate(journaldateField.getText());
-        journalList.setJournalEntry(journalentryField.getText());
+        journalList.setJournalTitle(journalTitleField.getText());
+        journalList.setJournalDate(journalDateField.getText());
+        journalList.setJournalEntry(journalEntryField.getText());
         journal.addLog(journalList);
-        journaltitleField.setText(" ");
-        journaldateField.setText(" ");
-        journalentryField.setText(" ");
+        journalTitleField.setText(" ");
+        journalDateField.setText(" ");
+        journalEntryField.setText(" ");
         updateJournalList();
     }
 
@@ -159,15 +159,15 @@ public class JournalApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: creates text fields
     private void makeFields() {
-        journaltitleField = new JTextField();
-        journaltitleField.setBounds(200, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
-        journaldateField = new JTextField();
-        journaldateField.setBounds(200, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
-        journalentryField = new JTextArea("");
-        journalentryField.setBounds(200, SPACING_HEIGHT * 6, 100, 200);
-        mainFrame.add(journaltitleField);
-        mainFrame.add(journaldateField);
-        mainFrame.add(journalentryField);
+        journalTitleField = new JTextField();
+        journalTitleField.setBounds(200, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
+        journalDateField = new JTextField();
+        journalDateField.setBounds(200, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
+        journalEntryField = new JTextArea("");
+        journalEntryField.setBounds(200, SPACING_HEIGHT * 6, 100, 200);
+        mainFrame.add(journalTitleField);
+        mainFrame.add(journalDateField);
+        mainFrame.add(journalEntryField);
     }
 
     // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
@@ -175,15 +175,15 @@ public class JournalApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: creates journal details text ready to be filled in
     private void createJournalDetails() {
-        journaltitleLabel = new JLabel("");
-        journaltitleLabel.setBounds(750, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
-        journaldateLabel = new JLabel("");
-        journaldateLabel.setBounds(750, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
-        journalentryLabel = new JLabel("");
-        journalentryLabel.setBounds(750, SPACING_HEIGHT * 6, 200, SPACING_HEIGHT);
-        mainFrame.add(journaltitleLabel);
-        mainFrame.add(journaldateLabel);
-        mainFrame.add(journalentryLabel);
+        journalTitleLabel = new JLabel("");
+        journalTitleLabel.setBounds(750, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
+        journalDateLabel = new JLabel("");
+        journalDateLabel.setBounds(750, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
+        journalEntryLabel = new JLabel("");
+        journalEntryLabel.setBounds(750, SPACING_HEIGHT * 6, 200, SPACING_HEIGHT);
+        mainFrame.add(journalTitleLabel);
+        mainFrame.add(journalDateLabel);
+        mainFrame.add(journalEntryLabel);
     }
 
     // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
@@ -192,9 +192,9 @@ public class JournalApp extends JFrame {
     // EFFECTS: updates journal details
     private void updateJournalDetails(String journalTitle) {
         JournalLogger clicked = journal.searchLog(journalTitle);
-        journaltitleLabel.setText(clicked.getJournalTitle());
-        journaldateLabel.setText(clicked.getJournalDate());
-        journalentryLabel.setText(clicked.getJournalEntry());
+        journalTitleLabel.setText(clicked.getJournalTitle());
+        journalDateLabel.setText(clicked.getJournalDate());
+        journalEntryLabel.setText(clicked.getJournalEntry());
     }
 
     // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
@@ -202,9 +202,9 @@ public class JournalApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: clears journal details
     private void clearJournalDetails() {
-        journaltitleField.setText(" ");
-        journaldateField.setText(" ");
-        journalentryField.setText(" ");
+        journalTitleField.setText(" ");
+        journalDateField.setText(" ");
+        journalEntryField.setText(" ");
         repaint();
     }
 
@@ -213,15 +213,15 @@ public class JournalApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: creates journal labels
     private void addJournalEntryLabels() {
-        JLabel journaltitleLabel = new JLabel("Title:");
-        journaltitleLabel.setBounds(700, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
-        mainFrame.add(journaltitleLabel);
-        JLabel journaldateLabel = new JLabel("Date:");
-        journaldateLabel.setBounds(700, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
-        mainFrame.add(journaldateLabel);
-        JLabel journalentryLabel = new JLabel("Entry:");
-        journalentryLabel.setBounds(700, SPACING_HEIGHT * 6, 100, SPACING_HEIGHT);
-        mainFrame.add(journalentryLabel);
+        JLabel journalTitleLabel = new JLabel("Title:");
+        journalTitleLabel.setBounds(700, SPACING_HEIGHT * 4, 100, SPACING_HEIGHT);
+        mainFrame.add(journalTitleLabel);
+        JLabel journalDateLabel = new JLabel("Date:");
+        journalDateLabel.setBounds(700, SPACING_HEIGHT * 5, 100, SPACING_HEIGHT);
+        mainFrame.add(journalDateLabel);
+        JLabel journalEntryLabel = new JLabel("Entry:");
+        journalEntryLabel.setBounds(700, SPACING_HEIGHT * 6, 100, SPACING_HEIGHT);
+        mainFrame.add(journalEntryLabel);
     }
 
     // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
@@ -229,15 +229,15 @@ public class JournalApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: adds labels for creating journal logs
     private void addAddJournalLabels() {
-        JLabel journaltitleLabel = new JLabel("Title:");
-        journaltitleLabel.setBounds(165,SPACING_HEIGHT * 4,100,SPACING_HEIGHT);
-        mainFrame.add(journaltitleLabel);
-        JLabel journaldateLabel = new JLabel("Date:");
-        journaldateLabel.setBounds(165,SPACING_HEIGHT * 5,100,SPACING_HEIGHT);
-        mainFrame.add(journaldateLabel);
-        JLabel journalentryLabel = new JLabel("Entry:");
-        journalentryLabel.setBounds(165,SPACING_HEIGHT * 6,100,SPACING_HEIGHT);
-        mainFrame.add(journalentryLabel);
+        JLabel journalTitleLabel = new JLabel("Title:");
+        journalTitleLabel.setBounds(165,SPACING_HEIGHT * 4,100,SPACING_HEIGHT);
+        mainFrame.add(journalTitleLabel);
+        JLabel journalDateLabel = new JLabel("Date:");
+        journalDateLabel.setBounds(165,SPACING_HEIGHT * 5,100,SPACING_HEIGHT);
+        mainFrame.add(journalDateLabel);
+        JLabel journalEntryLabel = new JLabel("Entry:");
+        journalEntryLabel.setBounds(165,SPACING_HEIGHT * 6,100,SPACING_HEIGHT);
+        mainFrame.add(journalEntryLabel);
     }
 
     // MODIFIES: this

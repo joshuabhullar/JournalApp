@@ -66,3 +66,23 @@ Fri Dec 02 15:11:32 PST 2022
 Journal log journalentry2 was deleted from the journal
 Fri Dec 02 15:11:34 PST 2022
 Journal log journalentry3 was deleted from the journal
+
+# Phase 4: Task 3
+
+For the actual design and refactoring of my project's design,
+I don't think there is anything glaringly obvious that I would
+want to refactor. My project and especially the code are quite simple,
+so there wouldn't be any major changes. 
+
+One thing I could potentially refactor is create a new class in the
+model folder called ID which could act as a better way to viewLog and
+searchLog up logs. Currently, the searchLog and viewLog methods within the Journal
+class use the journal log's title to execute the methods, so problems might
+arise when the two journal logs have the same title. If a separate class
+named ID was used, each journal log could have a unique ID attached to it
+when the journal log is created, so there will never be the chance of two
+journal logs having the same ID. Overall, adding the ID class would allow
+for a less buggy viewLog and searchLog methods.
+
+I would also want to spend a lot more time making a visually appealing GUI,
+as my current GUI named JournalApp is quite ugly (but still fully functional!).
