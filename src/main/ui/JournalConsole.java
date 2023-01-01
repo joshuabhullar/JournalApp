@@ -9,9 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
 // Represents the journal application
 public class JournalConsole {
     private Journal journal;

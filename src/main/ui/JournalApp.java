@@ -33,8 +33,6 @@ public class JournalApp extends JFrame {
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
-    // References: https://docs.oracle.com/javase/tutorial/uiswing/components/panel.html
-    //             used throughout project for implementation of mainFrame
     // MODIFIES: journal, jsonWriter, jsonReader
     // EFFECTS: creates GUI and its components
     public JournalApp() {
@@ -52,8 +50,6 @@ public class JournalApp extends JFrame {
         addVisuals();
     }
 
-    // Reference: Used simpledrawingplayer to compress
-    //            this method into a bunch of different methods
     // MODIFIES: private fields
     // EFFECTS: creates components
     private void addVisuals() {
@@ -69,8 +65,6 @@ public class JournalApp extends JFrame {
         createEmptyJournalList();
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/menu.html
-    //            and MenuDemo
     // EFFECTS: create menu bar for gui
     public JMenuBar makeMenu() {
         JMenuBar menuBar;
@@ -88,7 +82,6 @@ public class JournalApp extends JFrame {
         return menuBar;
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
     // MODIFIES: Journal journal
     // EFFECTS: creates a journal list, ready for logs/entries to be added,
     //          then rerenders frame
@@ -105,7 +98,6 @@ public class JournalApp extends JFrame {
         updateJournalList();
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
     // MODIFIES: Journal journal
     // EFFECTS: deletes journal
     private void doDelete() {
@@ -115,7 +107,6 @@ public class JournalApp extends JFrame {
         clearJournalDetails();
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/list.html
     //            Also used ListDemo when implementing list related things such as
     //            DefaultListModel and JList
     // MODIFIES: this
@@ -129,7 +120,6 @@ public class JournalApp extends JFrame {
         someRandomList.setModel(defaultListModel);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html
     //            Used for implementation of listScrollPane
     //            https://docs.oracle.com/javase/tutorial/uiswing/events/intro.html
     //            Used for event handling
@@ -154,8 +144,6 @@ public class JournalApp extends JFrame {
         mainFrame.add(listScrollPane);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
-    //            and TextDemo
     // MODIFIES: this
     // EFFECTS: creates text fields
     private void makeFields() {
@@ -170,8 +158,6 @@ public class JournalApp extends JFrame {
         mainFrame.add(journalEntryField);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
-    //            and LabelDemo
     // MODIFIES: this
     // EFFECTS: creates journal details text ready to be filled in
     private void createJournalDetails() {
@@ -186,8 +172,6 @@ public class JournalApp extends JFrame {
         mainFrame.add(journalEntryLabel);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
-    //            and TextComponentDemo
     // MODIFIES: this
     // EFFECTS: updates journal details
     private void updateJournalDetails(String journalTitle) {
@@ -197,8 +181,6 @@ public class JournalApp extends JFrame {
         journalEntryLabel.setText(clicked.getJournalEntry());
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
-    //            and TextComponentDemo
     // MODIFIES: this
     // EFFECTS: clears journal details
     private void clearJournalDetails() {
@@ -208,8 +190,6 @@ public class JournalApp extends JFrame {
         repaint();
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
-    //            and LabelDemo
     // MODIFIES: this
     // EFFECTS: creates journal labels
     private void addJournalEntryLabels() {
@@ -224,8 +204,6 @@ public class JournalApp extends JFrame {
         mainFrame.add(journalEntryLabel);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
-    //            and LabelDemo
     // MODIFIES: this
     // EFFECTS: adds labels for creating journal logs
     private void addAddJournalLabels() {
@@ -255,8 +233,6 @@ public class JournalApp extends JFrame {
         mainFrame.add(journalLoggerHeader);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
-    //            and ButtonDemo
     // MODIFIES: this
     // EFFECTS: create journal log button
     private void addAddJournalEntryButton() {
@@ -268,8 +244,6 @@ public class JournalApp extends JFrame {
         mainFrame.add(createButton);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
-    //            and ButtonDemo
     // MODIFIES: this
     // EFFECTS: delete button to delete journal log
     private void addDeleteJournalEntryButton() {
@@ -281,8 +255,6 @@ public class JournalApp extends JFrame {
         mainFrame.add(createButton);
     }
 
-    // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
-    //            and IconDemo
     // EFFECTS: puts image into journalapp
     protected ImageIcon makeImageIcon() {
         java.net.URL imgURL = JournalApp.class.getResource("images/journal.png");

@@ -7,9 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
 class JournalTest {
     private JournalLogger log1;
     private JournalLogger log2;
@@ -120,4 +117,5 @@ class JournalTest {
         log3.setJournalEntry("something very not random happened just now");
         assertEquals("something very not random happened just now", log3.getJournalEntry());
     }
+
 }

@@ -3,9 +3,6 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
 // Represents a journal log with a journal title, journal date, and journal entry
 public class JournalLogger implements Writable {
     private String journalTitle;

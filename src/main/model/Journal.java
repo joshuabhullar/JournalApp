@@ -6,9 +6,6 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
 // Represents a journal with a name and empty list of journal logs
 public class Journal implements Writable {
     private ArrayList<JournalLogger> logs;

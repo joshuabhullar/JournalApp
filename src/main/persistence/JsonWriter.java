@@ -5,9 +5,6 @@ import org.json.JSONObject;
 
 import java.io.*;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
 // Represents a writer that writes JSON representation of journal to file
 public class JsonWriter {
     private static final int TAB = 4;

@@ -9,9 +9,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
 public class JsonReaderTest extends JsonTest {
 
     @Test

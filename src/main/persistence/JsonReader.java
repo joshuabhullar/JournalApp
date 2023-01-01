@@ -11,9 +11,6 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// References: inspiration taken from the JsonSerializationDemo project
-//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-
 // Represents a reader that reads a journal from JSON data stored in file
 public class JsonReader {
     private String source;
